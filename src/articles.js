@@ -25,7 +25,7 @@ const getArticles = (req, res) => {
 const updateArticle = (req, res) => {
     let id = req.params.id
     if(!id){
-        res.status(400).send("Please provide an valid id!")
+        res.status(404).send("Please provide an valid id!")
     }else{
         articles.filter(article => {
             if(article.id == id){
@@ -39,7 +39,7 @@ const updateArticle = (req, res) => {
 
 //post an article
 const postArticle = (req, res) => {
-    if(!req.body.text){
+    if(!req.body.text){ 
         res.status(400).send("The text of the article is missing!")
     }else{
         let newArticle = {id: currentId, author: "new author", text: req.body.text, comment: [], date: new Date()}
@@ -48,7 +48,6 @@ const postArticle = (req, res) => {
         currentId += 1
     }
 }
-
 
 
 module.exports = (app) => {
