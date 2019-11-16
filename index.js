@@ -8,6 +8,7 @@ app.use(cookieParser)
 require('./src/articles')(app)
 require('./src/profile')(app)
 require('./src/following')(app)
+require('./src/auth')(app)
 
 
 
