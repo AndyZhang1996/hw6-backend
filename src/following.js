@@ -1,12 +1,12 @@
 "use strict"
 const followingList = [
     {
-        username: "andy1",
+        username: "xz75",
         friends: ["etain", "DLeebron"]
     }
 ]
 
-let loggedInUser = "andy1"           //this is stub loggedInUser
+let loggedInUser = "xz75"           //this is stub loggedInUser
 
 //get the list of users being followed by the requested user
 const getFriends = (req, res) => {
