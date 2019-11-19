@@ -1,11 +1,13 @@
 "use strict"
 //profile.js contains all user profile 
 //stub user profiles 
+const Profile = require('./model.js').Profile
+
 const profiles = [
     {
         username: 'DLeebron',
         headline: 'This is my headline!',
-        email: 'foo@bar.com',
+        email: 'foo@bar.com',   
         zipcode: 123,
         dob: '128999122000',
         avatar: 'https://upload.wikimedia.org/wikipedia/en/thumb/4/4e/DWLeebron.jpg/220px-DWLeebron.jpg',
@@ -38,6 +40,56 @@ const profile = {
 }
 
 let loggedInUser = "andy1"           //this is stub loggedInUser
+
+
+//Get the headline for a user
+const getHeadline = (req, res) => {
+    let username = req.params.user
+    if(!username){
+        username = req.username
+    }
+    Profile.find({username: username}).exec(function(err, profiles){
+        if(err){
+            return console.log(err)
+        }
+        if(!profiles || profiles.length == 0){
+            res.status(404).send("No matching user found for getHeadline")
+            return
+        }
+        const profile = profiles[0]
+        res.status(200).send({username: username, headline: profile.headline})
+        return
+    })
+}
+
+
+//Update the headline for the logged in user
+const updateHeadline = (req, res) => {
+    const username = req.username          //get the username of the loggedIn user
+    // return console.log(username)
+    const headline = req.body.headline    //get the headline 
+    if(!username){
+        res.status(400).send("No username given")
+        return
+    }
+    if(!headline){
+        res.status(400).send("Please provide a headline")
+        return
+    }
+
+    Profile.updateOne({username: username}, {$set: {headline: headline}}, function(err, profile){
+        if(err){
+            res.status(400).send(err)
+            return
+        }
+        res.status(200).send({username: username, headline: headline})
+        return
+    })
+}
+
+
+
+
 
 //get the avatar of the user
 const getAvatar = (req, res) => {
@@ -165,11 +217,14 @@ const getDob = (req, res) => {
 
 
 module.exports = (app) => {
-    app.get("/avatar/:user?", getAvatar)
-    app.put("/avatar", updateAvatar)
-    app.get("/email/:user?", getEmail)
-    app.put("/email", updateEmail)
-    app.get("/zipcode/:user?", getZipcode)
-    app.put("/zipcode", updateZipcode)
-    app.get("/dob/:user?", getDob)
+    app.get("/headline/:user?", getHeadline)
+    app.put("/headline", updateHeadline)
+
+    // app.get("/avatar/:user?", getAvatar)
+    // app.put("/avatar", updateAvatar)
+    // app.get("/email/:user?", getEmail)
+    // app.put("/email", updateEmail)
+    // app.get("/zipcode/:user?", getZipcode)
+    // app.put("/zipcode", updateZipcode)
+    // app.get("/dob/:user?", getDob)
 }
