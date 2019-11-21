@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+<testsuite name="test for the backend article functionality" errors="0" tests="6" failures="0" time="0.343" timestamp="2019-11-20T20:15:48">
+  <testcase classname="test for the backend article functionality" name="log in" time="0.052"></testcase>
+  <testcase classname="test for the backend article functionality" name="should return articles without supplying the id" time="0.08"></testcase>
+  <testcase classname="test for the backend article functionality" name="should return 0 article when supplyign invalid id" time="0.032"></testcase>
+  <testcase classname="test for the backend article functionality" name="should return articles when supplying the valid id" time="0.054"></testcase>
+  <testcase classname="test for the backend article functionality" name="should return one article when posting a new article" time="0.046"></testcase>
+  <testcase classname="test for the backend article functionality" name="should return one more articles after posting and the content should match" time="0.077"></testcase>
+</testsuite>
+</testsuites>

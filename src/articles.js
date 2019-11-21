@@ -31,7 +31,7 @@ const hello = (req, res) => res.send({ hello: "world changed!" })
 const updateArticle = (req, res) => {
     let id = req.params.id
     if(!id){
-        res.status(404).send("Please provide an valid id!")
+        res.status(400).send("Please provide an valid id!")
     }else{
         articles.filter(article => {
             if(article.id == id){
@@ -55,7 +55,7 @@ const updateArticle = (req, res) => {
 //     }
 // }
 
-//post an article
+//post an article as logged-in user
 const postArticle = (req, res) => {
     const username = req.username          //get the loggedin user's username 
     const text = req.body.text             //get the new article's text
@@ -97,7 +97,7 @@ const getArticles = (req, res) => {
                 res.status(200).send({articles: articles})
                 return
             }else{
-                res.status(404).send("There is no matching article")
+                res.status(400).send("There is no matching article")
             }
         })
     }else if(username){
@@ -108,7 +108,7 @@ const getArticles = (req, res) => {
             }
             res.status(200).send({articles: articles})
         })
-    }else{
+    }else{  //this will return all the loggedin user's articles and his friends' articles
         const username = req.username            //get the loggedin user's username 
         if(!username){
             res.status(400).send("There is no logged-in user")
@@ -124,7 +124,7 @@ const getArticles = (req, res) => {
             }
             const profileObj = profiles[0]
             const allUsers = [username, ...profileObj.following]
-            Article.find({author: {$in: allUsers}}).exec(function(err, articles){
+            Article.find({author: {$in: allUsers}}).sort({date: -1}).exec(function(err, articles){
                 if(err){
                     res.status(400).send(err)
                     return

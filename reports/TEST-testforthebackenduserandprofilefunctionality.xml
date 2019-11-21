@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+<testsuite name="test for the backend user and profile functionality" errors="0" tests="5" failures="0" time="0.165" timestamp="2019-11-20T20:15:49">
+  <testcase classname="test for the backend user and profile functionality" name="this should register a new user in the database and return status 200" time="0.038"></testcase>
+  <testcase classname="test for the backend user and profile functionality" name="log in" time="0.045"></testcase>
+  <testcase classname="test for the backend user and profile functionality" name="should get the headline of xz75" time="0.036"></testcase>
+  <testcase classname="test for the backend user and profile functionality" name="should update the headline of loggedin user" time="0.034"></testcase>
+  <testcase classname="test for the backend user and profile functionality" name="shoud log out the current loggedin user" time="0.012"></testcase>
+</testsuite>
+</testsuites>

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/jasmine-node --junitreport --captureExceptions spec"
   },
   "keywords": [],
   "author": "",
@@ -15,11 +15,17 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
+    "es6-promise": "^4.2.8",
     "express": "^4.17.1",
     "isomorphic-fetch": "^2.2.1",
     "jasmine-node": "^3.0.0",
     "md5": "^2.2.1",
     "mongoose": "^5.7.11",
     "redis": "^2.8.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
+    "mocha-junit-reporter": "^1.23.1"
   }
 }

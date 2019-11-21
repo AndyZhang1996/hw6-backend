@@ -23,18 +23,18 @@ const register = (req, res) => {
         // console.log(dob)
         // console.log(zipcode)
         // console.log(password)
-        res.status(400).send("Please provide all the necessary information to register")
+        res.status(400).send({Msg: "Please provide all the necessary information to register"})
         // res.status(401).send(username)
         return
     }
 
     User.find({ username: username }).exec(function (err, users) {
         if (err) {
-            res.status(400).send(err)
+            res.status(400).send({Msg: err})
             return
         }
         if (users.length > 0) {
-            res.status(400).send("The username has been registered!")
+            res.status(400).send({Msg: "The username has been registered!"})
             return
         }
         const salt = username + new Date().getTime()
@@ -42,14 +42,14 @@ const register = (req, res) => {
 
         new User({ username: username, salt: salt, hash: hash }).save(function (err, user) {
             if (err) {
-                res.status(400).send(err)
+                res.status(400).send({Msg: err})
                 return
             }
         })
 
         new Profile({ username: username, headline: "", following: [], email: email, dob: dob, zipcode: zipcode, avatar: "" }).save(function (err, profile) {
             if (err) {
-                res.status(400).send(err)
+                res.status(400).send({Msg: err})
                 return
             }
         })
@@ -65,17 +65,17 @@ const login = (req, res) => {
     const password = req.body.password
 
     if (!username || !password) {
-        res.status(400).send("You need to provide a username and password")
+        res.status(400).send({Msg: "You need to provide a username and password"})
         return
     }
 
     User.find({ username: username }).exec(function (err, users) {
         if (err) {
-            res.status(400).send(err)
+            res.status(400).send({Msg: err})
             return
         }
         if (!users || users.length == 0) {
-            res.status(404).send("No users in the database!")
+            res.status(400).send({Msg: "No user found!"})
             return
         }
         const userObj = users[0]
@@ -88,11 +88,12 @@ const login = (req, res) => {
             // sessionUser[sessionKey] = userObj
             // console.log(sessionUser)
             res.cookie(cookieKey, sessionKey, { maxAge: 3600 * 1000, httpOnly: true })
+            // req.setHeader('Authorization', )
             // console.log(req.cookies)
             // res.setHeader('Content-Type', 'application/json')
             res.status(200).send({ username: username, result: "success" })
         } else {    
-            res.status(400).send('wrong password')
+            res.status(400).send({Msg: 'wrong password'})
         }
     })
 }
@@ -120,7 +121,7 @@ const logout = (req, res) => {
     const sid = req.cookies[cookieKey]
     sessionUser.delete(sid)
     res.clearCookie(cookieKey)
-    res.status(200).send("successfully log out")
+    res.status(200).send({result: "successfully log out"})
 }
 
 
@@ -132,17 +133,17 @@ const updatePassword = (req, res) => {
     const username = userObj.username            //get the username of the logged in user 
 
     if(!newPassword){
-        res.status(400).send("You need to provide an new password!")
+        res.status(400).send({Msg: "You need to provide a password!"})
         return
     }
 
     User.find({username: username}).exec(function(err, users){
         if(err){
-            res.status(400).send(err)
+            res.status(400).send({Msg: err})
             return
         }
         if(users.length == 0){
-            res.status(400).send("No matching user found")
+            res.status(400).send({Msg: "No matching user found"})
             return
         }
 
@@ -151,7 +152,7 @@ const updatePassword = (req, res) => {
 
         User.updateOne({username: username}, {$set: {salt: newSalt, hash: newHash}}, function(err, user){
             if(err){
-                res.status(400).send(err)
+                res.status(400).send({Msg: err})
                 return
             }
             res.status(200).send({username: username, result: "success"})
